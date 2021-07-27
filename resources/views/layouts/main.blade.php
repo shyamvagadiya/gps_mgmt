@@ -23,7 +23,7 @@
 
     <link href="{{asset('assets/css/autocomplete.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('assets/css/datatable.min.css')}}" rel="stylesheet" type="text/css" />
-
+    @yield('css')
   </head>
   <body>
     <div class="container-scroller">

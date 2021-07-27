@@ -14,10 +14,10 @@ class VehicleController extends Controller
         if($request->ajax())
         {
             $clients=Vehicle::with('client','type','application');
-            // if($request->company_id == null && $request->created_at == null && $request->city == null && $request->expiry_date == null && $request->warranty == null)
-            // {
-            //     $clients=$clients->whereDate('created_at',date('Y-m-d'));   
-            // }
+            if($request->company_id == null && $request->created_at == null && $request->city == null && $request->expiry_date == null && $request->warranty == null && $request->comman_search == null)
+            {
+                $clients=$clients->whereDate('created_at',date('Y-m-d'));   
+            }
             if($request->has('company_id') && $request->company_id != null)
             {
                 $clients=$clients->whereHas('client',function($query) use ($request){
@@ -29,6 +29,16 @@ class VehicleController extends Controller
                 $clients=$clients->whereHas('client',function($query) use ($request){
                     $query->where('city', 'like', '%' . $request->city . '%');
                 });
+            }
+            if($request->has('comman_search') && $request->comman_search != null)
+            {
+                $clients=$clients->where('user_id', 'like', '%' . $request->comman_search . '%')->orWhere('vehicle_no', 'like', '%' . $request->comman_search . '%')->orWhere('imei_no', 'like', '%' . $request->comman_search . '%')->orWhere('sim_no', 'like', '%' . $request->comman_search . '%')->orWhere('salesman', 'like', '%' . $request->comman_search . '%')->orWhere('dealer', 'like', '%' . $request->comman_search . '%')->orWhere('created_at', 'like', '%' . $request->comman_search . '%')->orWhere('expiry_date', 'like', '%' . $request->comman_search . '%')->orWhere('warranty', 'like', '%' . $request->comman_search . '%')->orWhere('vehicle_status', 'like', '%' . $request->comman_search . '%')->orWhere('vehicle_status', 'like', '%' . $request->comman_search . '%')->orWhereHas('client',function($query) use ($request){
+                    $query->where('customer_no', 'like', '%' . $request->comman_search . '%')->orWhere('company', 'like', '%' . $request->comman_search . '%')->orWhere('customer_name', 'like', '%' . $request->comman_search . '%')->orWhere('city', 'like', '%' . $request->comman_search . '%')->orWhere('state', 'like', '%' . $request->comman_search . '%')->orWhere('mobile_no', 'like', '%' . $request->comman_search . '%')->orWhere('state', 'like', '%' . $request->comman_search . '%');
+                	})->orWhereHas('type',function($query2) use ($request){
+                    	$query2->where('name', 'like', '%' . $request->comman_search . '%');
+                    })->orWhereHas('application',function($query3) use ($request){
+                    	$query3->where('name', 'like', '%' . $request->comman_search . '%');
+                    });
             }
             // if($request->has('created_at') && $request->created_at != null)
             // {   

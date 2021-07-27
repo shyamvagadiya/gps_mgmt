@@ -79,3 +79,6 @@ Route::get('client/edit/{id}','ClientController@edit')->name('client.edit');
 Route::post('update/client','ClientController@update')->name('update.client');
 
 Route::get('load/prev_data','ClientController@load_prev_data')->name('load.prev_data');
+Route::get('permission/management','PermissionController@index')->name('permission.management');
+Route::get('/roles', 'PermissionController@index')->name('role.get');
+Route::post('/role/{role_id}/assign-permissions', 'PermissionController@assign_permissions')->name('role.assign_permission');

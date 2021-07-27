@@ -1,7 +1,36 @@
 @extends('layouts.main')
-
 @section('title')
 Vehicle List
+@endsection
+@section('css')
+<style type="text/css">
+    .loader {
+         position: fixed;
+          left: 50%;
+          top: 50%;
+          width: 100%;
+          height: 100%;
+          z-index: 9999;
+
+          border: 16px solid #f3f3f3;
+          border-radius: 50%;
+          border-top: 16px solid #3498db;
+          width: 120px;
+          display: none;
+          height: 120px;
+          -webkit-animation: spin 2s linear infinite; /* Safari */
+          animation: spin 2s linear infinite;
+        }
+        @-webkit-keyframes spin {
+          0% { -webkit-transform: rotate(0deg); }
+          100% { -webkit-transform: rotate(360deg); }
+        }
+
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+</style>
 @endsection
 @section('content')
 <div class="container-fluid">
@@ -67,17 +96,22 @@ Vehicle List
                             </div>
                         </div>
 
-                        
                         <div class="col-md-3">
                             <div class="form-group">
-                                <a href="{{route('add.vehicle')}}" class="btn btn-danger" style="margin-top: 20px">Add Vehicle</a>
+                                <label>Comman Search</label>
+                                <input type="text" name="comman_search" class="form-control comman_search">
                             </div>
                         </div>
 
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <a href="{{route('add.vehicle')}}" class="btn btn-danger" style="margin-top: 20px">Add Vehicle</a>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <a href="javascript:;" class="btn btn-warning downloadReport" style="margin-top: 20px">Download Report</a>
                             </div>
@@ -93,7 +127,7 @@ Vehicle List
                                 <input type="file" name="file" class="form-control">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <button class="btn btn-success" style="margin-top: 22px" type="submit">Submit</button>
                             </div>
@@ -152,8 +186,10 @@ Vehicle List
     <input type="hidden" name="created_at_end" class="created_at_end_export">
     <input type="hidden" name="expiry_date_end" class="expiry_date_end_export">
     <input type="hidden" name="warranty_end" class="warranty_end_export">
+    <input type="hidden" name="comman_search" class="comman_search_export">
+    
 </form>
-
+<div class="loader"></div>
 @endsection
 @section('scripts')
 <script type="text/javascript">
@@ -204,9 +240,15 @@ Vehicle List
         $('.city_export').val($(this).val());
         getData();
     });
+    $(document).on('focusout','.comman_search',function(){
+        $('.comman_search_export').val($(this).val());
+        getData();
+    });
+    
     
     function getData()
     {
+        $('.loader').show();
         var formData=$('#searchData').serialize();
         $.ajax({
             url: "{{route('show.vehicle')}}",
@@ -214,6 +256,7 @@ Vehicle List
             success: function(response){
               $('.dyanamicTable').html(response.html);
               $('#myTable').DataTable();
+              $('.loader').hide();
             }
         });
     }

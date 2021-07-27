@@ -6,11 +6,14 @@ Home
 @section('content')
 <div class="container">
     <div class="row">
+
+        @can('client-view')
         <div class="col-md-4">
             <div class="card bg-dark text-white " data-route="{{route('show.client')}}" style="background: linear-gradient(135deg, rgb(19, 241, 252) 0%, rgb(4, 112, 220) 100%);height: 150px;">
                 <h1 class="" style="color: white;margin-top: 50px;" align="center"><a href="{{route('show.client')}}" style="color: white" target="_blank">Client</a></h1>
             </div>
         </div>
+        @endcan
 
         <!-- <div class="col-md-4">
             <div class="card bg-dark text-white " data-route="{{route('add.client')}}" style="background: linear-gradient(135deg, rgb(98, 39, 116) 0%, rgb(197, 51, 100) 100%);height: 150px;">
@@ -45,6 +48,13 @@ Home
                 <h1 class="" style="color: white;margin-top: 50px;" align="center"><a href="{{route('complain.management')}}" style="color: white" target="_blank">Complain Mgmt</a></h1>
             </div>
         </div>
+        @if(Auth::user()->hasRole('super_admin'))
+	        <div class="col-md-4">
+	            <div class="card bg-dark text-white " data-route="{{route('permission.management')}}" style="background: linear-gradient(135deg, rgb(240, 47, 194) 0%, rgb(96, 148, 234) 100%);height: 150px;">
+	                <h1 class="" style="color: white;margin-top: 50px;" align="center"><a href="{{route('permission.management')}}" style="color: white" target="_blank">Permission Mgmt</a></h1>
+	            </div>
+	        </div>
+	    @endif
     </div>
 </div>
 @endsection
